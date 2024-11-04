@@ -1,9 +1,9 @@
 class Reading:
     reading_date: str
-    meter_reading: str
+    meter_reading: float
 
     # reading_date will later be a date
-    def __init__(self, reading_date: str, meter_reading: str) -> None:
+    def __init__(self, reading_date: str, meter_reading: float) -> None:
         self.reading_date = reading_date
         self.meter_reading = meter_reading
 

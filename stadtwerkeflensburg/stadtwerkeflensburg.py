@@ -34,7 +34,7 @@ class StadtwerkeFlensburg():
             return self
         return closure().__await__()
 
-    async def async_start(self):
+    async def _async_start(self):
         logger.debug("start")
         playwright: Playwright = await async_playwright().start()
         self.browser: Browser = await playwright.chromium.launch(headless=self.headless)
@@ -42,6 +42,7 @@ class StadtwerkeFlensburg():
         self.page: Page = await context.new_page()
 
     async def async_login(self):
+        await self._async_start()
         logger.debug("login")
         path = "kundenkonto/#/loginRegistration/"
         url = urljoin(self.base_url, path)
@@ -65,7 +66,7 @@ class StadtwerkeFlensburg():
 
     async def async_get_meter_readings(self) -> list[Reading]:
         await self.page.get_by_text("Zählerstand erfassen").click()
-        sleep(1)
+        await self.page.wait_for_load_state("networkidle")
         table_locator = self.page.locator('table')
         row_locator = table_locator.locator('tr')
         colum_locator = row_locator.locator('td')
@@ -73,11 +74,11 @@ class StadtwerkeFlensburg():
         readings: list[Reading] = []
         for x in range(0, len(colum_texts), 2):
             reading_date = colum_texts[x]
-            meter_reading = colum_texts[x + 1]
+            meter_reading = float(colum_texts[x + 1].replace(',', '.'))
             reading = Reading(reading_date, meter_reading)
             readings.append(reading)
         return readings
 
-    async def async_get_last_meter_reading(self) -> Reading:
+    async def async_get_last_meter_reading(self) -> float:
         readings = await self.async_get_meter_readings()
-        return readings[0]
+        return readings[0].meter_reading
