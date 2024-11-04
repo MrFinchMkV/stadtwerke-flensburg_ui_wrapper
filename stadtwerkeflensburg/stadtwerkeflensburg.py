@@ -1,11 +1,7 @@
-# import asyncio
 import logging
-# from datetime import date
 from urllib.parse import urljoin
 from .models.reading import Reading
 from playwright.async_api import Browser, Page, Playwright, async_playwright
-
-from time import sleep
 
 logger = logging.getLogger(__name__)
 
