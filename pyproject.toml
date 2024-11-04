@@ -1,0 +1,20 @@
+[project]
+name = "stadtwerke-flensburg_ui_wrapper"
+version = "0.0.1"
+description = "Python 3 UI wrapper for Stadtwerke Flensburg"
+authors = [
+    {name = "MrFinchMKV", email = "mr.finch@binary-io.net"},
+]
+dependencies = ["pytest-playwright==0.5.2"]
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+]
+keywords=["stadtwerke-flensburg", "wrapper", "ui"]
+requires-python=">=3.12.6"
+
+[project.urls]
+"Homepage" = "https://github.com/MrFinchMkV/stadtwerke-flensburg_ui_wrapper"
+"Bug Tracker" = "https://github.com/MrFinchMkV/stadtwerke-flensburg_ui_wrapper/issues"
