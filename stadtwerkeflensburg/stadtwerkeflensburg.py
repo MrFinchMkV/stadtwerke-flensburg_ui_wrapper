@@ -64,7 +64,7 @@ class StadtwerkeFlensburg():
         logger.debug("close")
         await self.browser.close()
 
-    async def async_get_meter_readings(self) -> list[Reading]:
+    async def async_get_readings(self) -> list[Reading]:
         await self.page.get_by_text("Zählerstand erfassen").click()
         await self.page.wait_for_load_state("networkidle")
         table_locator = self.page.locator('table')
@@ -79,6 +79,6 @@ class StadtwerkeFlensburg():
             readings.append(reading)
         return readings
 
-    async def async_get_last_meter_reading(self) -> float:
-        readings = await self.async_get_meter_readings()
-        return readings[0].meter_reading
+    async def async_get_last_reading(self) -> Reading:
+        readings = await self.async_get_readings()
+        return readings[0]
