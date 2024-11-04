@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 from .models.reading import Reading
 from playwright.async_api import Browser, Page, Playwright, async_playwright
 
-logger = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class StadtwerkeFlensburg():
@@ -19,19 +19,19 @@ class StadtwerkeFlensburg():
         self.password = password
         self.headless = headless
         logging.basicConfig(level=logging.DEBUG)
-        logger.debug(f"E-Mail: {self.email}")
-        logger.debug("Password: ***")
-        logger.debug(f"Headless: {self.headless}")
-        logger.debug(f"Base_URL: {self.base_url}")
+        _LOGGER.debug(f"E-Mail: {self.email}")
+        _LOGGER.debug("Password: ***")
+        _LOGGER.debug(f"Headless: {self.headless}")
+        _LOGGER.debug(f"Base_URL: {self.base_url}")
 
     def __await__(self):
         async def closure():
-            logger.debug("await")
+            _LOGGER.debug("await")
             return self
         return closure().__await__()
 
     async def _async_start(self):
-        logger.debug("start")
+        _LOGGER.debug("start")
         playwright: Playwright = await async_playwright().start()
         self.browser: Browser = await playwright.chromium.launch(headless=self.headless)
         context = await self.browser.new_context()
@@ -39,10 +39,10 @@ class StadtwerkeFlensburg():
 
     async def async_login(self):
         await self._async_start()
-        logger.debug("login")
+        _LOGGER.debug("login")
         path = "kundenkonto/#/loginRegistration/"
         url = urljoin(self.base_url, path)
-        logger.debug(f"Goto URL: {url}")
+        _LOGGER.debug(f"Goto URL: {url}")
         await self.page.goto(url)
         await self.page.get_by_text("Reject all").click()
         await self.page.get_by_text("E-Mail-Adresse", exact=True).fill(self.email)
@@ -50,14 +50,14 @@ class StadtwerkeFlensburg():
         await self.page.get_by_label("loginButton").click()
 
     async def async_logout(self):
-        logger.debug("logout")
+        _LOGGER.debug("logout")
         path = "/kundenkonto/#/loginRegistration/logout"
         url = urljoin(self.base_url, path)
-        logger.debug(f"URL: {url}")
+        _LOGGER.debug(f"URL: {url}")
         await self.page.goto(url)
 
     async def async_close_browser(self):
-        logger.debug("close")
+        _LOGGER.debug("close")
         await self.browser.close()
 
     async def async_get_readings(self) -> list[Reading]:
