@@ -30,15 +30,15 @@ class StadtwerkeFlensburg():
             return self
         return closure().__await__()
 
-    async def _async_start(self):
-        _LOGGER.debug("start")
+    async def _async_open(self):
+        _LOGGER.debug("open")
         playwright: Playwright = await async_playwright().start()
         self.browser: Browser = await playwright.chromium.launch(headless=self.headless)
         context = await self.browser.new_context()
         self.page: Page = await context.new_page()
 
     async def async_login(self):
-        await self._async_start()
+        await self._async_open()
         _LOGGER.debug("login")
         path = "kundenkonto/#/loginRegistration/"
         url = urljoin(self.base_url, path)
@@ -56,7 +56,7 @@ class StadtwerkeFlensburg():
         _LOGGER.debug(f"URL: {url}")
         await self.page.goto(url)
 
-    async def async_close_browser(self):
+    async def async_close(self):
         _LOGGER.debug("close")
         await self.browser.close()
 
