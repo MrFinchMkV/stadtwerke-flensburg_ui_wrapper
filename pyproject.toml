@@ -5,7 +5,10 @@ description = "Python 3 UI wrapper for Stadtwerke Flensburg"
 authors = [
     {name = "MrFinchMKV", email = "mr.finch@binary-io.net"},
 ]
-dependencies = ["pytest-playwright==0.5.2"]
+dependencies = [
+    "pytest-playwright==0.5.2",
+    "playwright==1.48.0"
+]
 readme = "README.md"
 license = {text = "MIT"}
 classifiers = [
